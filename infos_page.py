@@ -1,53 +1,83 @@
 import requests 
 from bs4 import BeautifulSoup
+import csv
 
+link = []
 def fetch(url):
     result = requests.get(url)
-    if result.ok: 
-        return result.text
-
-def soup(infos, balise):
-    soup = BeautifulSoup(infos, 'html.parser')
-    infos_produit = soup.findAll(balise)
-    return infos_produit
-        
-def product_info(tableau):
-    info = soup(result_request,tableau)
-    [print(tableau) for tableau in info ]
-    return info 
-
-def product_category(category):
-    categorie = soup(result_request,category)
-    [print(category) for category in categorie]
-    return categorie
-
-def product_titel(titel):
-    titel = soup(result_request,titel)
-    print(titel)
-    return titel
-
-def review_rating(review):
-    note = soup(result_request,review)
-    return note
-
-def product_description(description):
-    product_desc = soup(result_request,description)
-    return product_desc
-
-def product_pic(pic):
-    product_img = soup(result_request,pic)
-    return product_img
-
-def recup(tableau,category,titel,rating,description,pic):
-    info = product_info(tableau)
-    category = product_category(category)
-    titel = product_titel(titel)
-    rating = review_rating(rating)
-    description = product_description(description)
-    image = product_pic(pic)
-    a = (info, category, titel, rating, description, image)
+    link.append(url)
+    return result
     
+def page_scraper(result_fetch):
+    soup = BeautifulSoup(result_fetch.content, 'html.parser')
+    return soup
 
-if __name__ =='__main__':    
+def affichage_link(url):
+    return str(url)
+ 
+def get_universal_product_code(result_fetch):
+    commercial_infos = page_scraper(result_fetch).findAll('td')
+    return (commercial_infos[0].text)
+
+def get_product_titel(result_fetch):
+    titel = page_scraper(result_fetch).h1
+    return titel.text    
+
+def get_price_including_tax(result_fetch):
+    commercial_infos = page_scraper(result_fetch).findAll('td')
+    return (commercial_infos[2].text)
+
+def get_price_excluding_tax(result_fetch):
+    commercial_infos = page_scraper(result_fetch).findAll('td')
+    return (commercial_infos[3].text)
+
+def get_number_available(result_fetch):
+    commercial_infos = page_scraper(result_fetch).findAll('td') 
+    return (commercial_infos[5].text)
+
+def get_product_description(result_fetch):
+    description = page_scraper(result_fetch).find('article', {'class': 'product_page'})('p')
+    return (description[3].text)
+ 
+def get_product_category(result_fetch):
+    categorie = page_scraper(result_fetch).find('ul', {'class': 'breadcrumb'})('a')
+    return (categorie[2].text)
+
+def get_review_rating(result_fetch):    
+    rev_rating = page_scraper(result_fetch).find('p', {'class': 'star-rating'})
+    return (str(rev_rating.text))
+
+def get_product_pic(result_fetch):
+    product_img = page_scraper(result_fetch).find('div', {'class': 'item active'})('img')
+    links_pic=[]
+    for i in product_img:
+        links_pic.append("https://books.toscrape.com/" + i['src'].replace('../', ''))
+    return (str(links_pic))
+    
+def recup(result_fetch):
+    affichage_url = affichage_link(link)
+    pro_upc = get_universal_product_code(result_fetch)
+    pro_titel = get_product_titel(result_fetch)
+    pro_price_tax_inc = get_price_including_tax(result_fetch)
+    pro_price_tax_exc = get_price_excluding_tax(result_fetch)
+    pro_num_available = get_number_available(result_fetch)
+    pro_description = get_product_description(result_fetch)
+    pro_category = get_product_category(result_fetch)
+    pro_rating = get_review_rating(result_fetch)
+    pro_picture = get_product_pic(result_fetch)
+    all_program = [affichage_url, pro_upc, pro_titel, pro_price_tax_inc, pro_price_tax_exc, pro_num_available, pro_description, pro_category, pro_rating, pro_picture]
+    return (all_program)
+
+def info_page_csv(program):
+    ligne_en_tete = ['product_page_url', 'universal_product_code', 'title', 'price_including_tax', 
+    'price_excluding_tax', 'number_available', 'product_description', 'category', 'review_rating', 'image_url']
+
+    with open (input('Nomme le fichier CSV: '), 'w') as file:
+        writer_csv = csv.writer(file, delimiter=',')
+        writer_csv.writerow(ligne_en_tete)
+        writer_csv.writerow(program)
+
+if __name__ =='__main__':
     result_request = fetch("https://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html")
-    recup('td', 'a', 'h1', 'i', 'p', 'img')
+    recups = recup(result_request)
+    info_page_csv(recups)
