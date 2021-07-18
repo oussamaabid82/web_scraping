@@ -1,14 +1,6 @@
-import requests 
-from bs4 import BeautifulSoup
+from scrapy import fetch, page_scraper
+import urllib.request
 import csv
-
-def fetch(url):
-    result = requests.get(url)
-    return (result , url)
-    
-def page_scraper(result_fetch):
-    soup = BeautifulSoup((result_fetch[0]).content, 'html.parser')
-    return soup
 
 def affichage_link(url):
     return str(url)
@@ -51,7 +43,11 @@ def get_product_pic(result_fetch):
     for i in product_img:
         links_pic.append("https://books.toscrape.com/" + i['src'].replace('../', ''))
     return (links_pic[0])
-    
+'''
+def download_pic(link_product_pic, titel):
+    img_name = str(titel) + '.jpg'
+    urllib.request.urlretrieve(link_product_pic,img_name)
+'''    
 def recup(result_fetch):
     affichage_url = affichage_link(result_fetch[1])
     pro_upc = get_universal_product_code(result_fetch)
@@ -63,13 +59,13 @@ def recup(result_fetch):
     pro_category = get_product_category(result_fetch)
     pro_rating = get_review_rating(result_fetch)
     pro_picture = get_product_pic(result_fetch)
+    #download_img = download_pic(pro_picture, pro_titel)
     all_program = [affichage_url, pro_upc, pro_titel, pro_price_tax_inc, pro_price_tax_exc, pro_num_available, pro_description, pro_category, pro_rating, pro_picture]
     return all_program
 
 def creating_csv_file(program, file_name):
     ligne_en_tete = ['product_page_url', 'universal_product_code', 'title', 'price_including_tax', 
     'price_excluding_tax', 'number_available', 'product_description', 'category', 'review_rating', 'image_url']
-
     with open (file_name, 'w') as file:
         writer_csv = csv.writer(file, delimiter=',')
         writer_csv.writerow(ligne_en_tete)
