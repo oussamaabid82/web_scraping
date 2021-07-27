@@ -47,12 +47,14 @@ def get_product_pic(result_fetch):
     return (links_pic[0])
 
 def download_pic(link_product_pic, titel, category_name):
-    if not os.path.exists ('./' + category_name):
-        os.mkdir ('./' + category_name)
+    if not os.path.exists ('./' + "SCRAPER" ):
+        os.mkdir ('./' + "SCRAPER")
+    if not os.path.exists ('./' + "SCRAPER" + '/ ' + category_name ):
+        os.mkdir ('./' + "SCRAPER" + '/ ' + category_name)
     if(len(titel))> 170:
-        img_name = './' + category_name + '/'  + str(titel[0:140]) + '.jpg'
+        img_name = './' + "SCRAPER" + '/ ' + category_name + '/'  + str(titel[0:140]) + '.jpg'
     else:
-         img_name = './' + category_name + '/'  + str(titel) + '.jpg' 
+         img_name = './' + "SCRAPER" + '/ ' + category_name + '/'  + str(titel) + '.jpg' 
     urllib.request.urlretrieve(link_product_pic,img_name)
 
 def recup(result_fetch):
@@ -74,12 +76,12 @@ def creating_csv_file(program, file_name, category_name):
     ligne_en_tete = ['product_page_url', 'universal_product_code', 'title', 'price_including_tax', 
     'price_excluding_tax', 'number_available', 'product_description', 'category', 'review_rating', 'image_url']
     if(len(file_name))> 170:
-        with open ('./' + category_name + '/' + file_name[0:140] + '.csv', 'w', encoding="utf-8") as file:
+        with open ('./' + "SCRAPER" + '/ ' + category_name + '/' + file_name[0:140] + '.csv', 'w', encoding="utf-8") as file:
             writer_csv = csv.writer(file, delimiter=',')
             writer_csv.writerow(ligne_en_tete)
             writer_csv.writerow(program)
     else:
-        with open ('./' + category_name + '/' + file_name + '.csv', 'w', encoding="utf-8") as file:
+        with open ('./' + "SCRAPER" + '/ ' + category_name + '/' + file_name + '.csv', 'w', encoding="utf-8") as file:
             writer_csv = csv.writer(file, delimiter=',')
             writer_csv.writerow(ligne_en_tete)
             writer_csv.writerow(program)

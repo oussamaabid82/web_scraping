@@ -41,7 +41,7 @@ def category_name(result_fetch):
 def creating_csv_file(recup, file_name, category_name):
     ligne_en_tete = ['product_page_url', 'universal_product_code', 'title', 'price_including_tax', 
     'price_excluding_tax', 'number_available', 'product_description', 'category', 'review_rating', 'image_url']
-    with open ('./' + category_name + '/' + file_name + '.csv', 'w', encoding="utf-8") as file:
+    with open ('./' + "SCRAPER" + '/ ' + category_name + '/' + file_name + '.csv', 'w', encoding="utf-8") as file:
         writer_csv = csv.writer(file, delimiter=',')
         writer_csv.writerow(ligne_en_tete)
         for line in recup:
