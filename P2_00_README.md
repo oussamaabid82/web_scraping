@@ -1,6 +1,6 @@
 # Programme d'extraction des prix 
 
-* ##### Ce programme aide à extraire des informations inscrit dans le tableau ci-dessous sur des livres vendus sur le site web ["https://books.toscrape.com/index.html"](https://books.toscrape.com/index.html)
+* ##### Ce programme aide à extraire les informations inscrites dans le tableau ci-dessous sur des livres vendus sur le site web ["https://books.toscrape.com/index.html"](https://books.toscrape.com/index.html)
 
 |product_page_url|universal_ product_code (upc)|title|price_including_tax|price_excluding_tax|number_available|product_description|category|review_rating|image_url
 |-|-|-|-|-|-|-|-|-|-|
