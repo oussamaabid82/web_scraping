@@ -23,22 +23,22 @@
 	- Démarrer votre terminal et diriger vous dans le dossier ou vous avez sauvegarder les fichiers ‘.py’
 	- Installez les modules néssesaire pour le bon fonctionnement du programme
 		```bash
-		pip install -r requirements.txt
+		pip install -r P2_0_requirements.txt
 		``` 
 	- Maintenant pour scraper les informations d'un seul livre il faut taper dans votre terminal:
 
 		```shell
-		python scrape_one_book.py
+		python P2_04_scrape_one_book.py
 		```
 	- Pour choisir une catégorie et scraper toutes les informations de tous les livres de cette catégorie il faut taper dans votre terminal:
 
 		```shell
-		python scrape_category.py
+		python P2_05_scrape_category.py
 		```  
 	* Finalement pour scraper tous les livres il faut taper dans votre terminal:
 
 		```shell
-		python scrape_all_books.py
+		python P2_06_scrape_all_books.py
 		```
 
 * ### Fabriqué avec
