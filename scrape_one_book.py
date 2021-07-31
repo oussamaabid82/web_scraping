@@ -1,5 +1,5 @@
 from scrapy import fetch, page_scraper
-import info_category as ic
+import infos_category as ic
 import scrape_all_books as iab
 import infos_page as ip
 
@@ -62,7 +62,7 @@ if __name__ =='__main__':
     choice = choice_book(books_links)
     recup = ip.recup(fetch(choice)) # Scrape ous les informations sur le livre choisi 
     titel = ip.get_product_titel(fetch(choice)) # Scrape le titre du livre pour l'utiliser comment nom du fichier csv
-    link_pic_book = ip.get_product_pic(fetch(choice))
+    link_pic_book = ip.get_product_pic(fetch(choice)) # lien de l'image
     category_name = ip.get_product_category(fetch(choice))
     ip.download_pic(link_pic_book, titel, category_name)
     ip.creating_csv_file(recup,titel, category_name)
