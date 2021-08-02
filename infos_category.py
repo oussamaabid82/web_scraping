@@ -10,7 +10,7 @@ def pagination (result_fetch_categori):
         page_number = page_footer.text.rstrip().lstrip() # Page 1 of 4
         total_page_count = int(page_number.split(' ')[-1])
         for p in range(2,total_page_count+1):
-            page_html = 'page-'+ str(p)  +'.html'
+            page_html = 'page-' + str(p)  + '.html'
             link_categori.append(result_fetch_categori[1].replace('index.html', '') + page_html)   
     return link_categori
 
@@ -38,16 +38,17 @@ def category_name(result_fetch):
       get_name = page_scraper(resu_fetch).find('li', {'class': 'active'}).text
       return (get_name)
 
-def creating_csv_file(recup, file_name, category_name):
+def creating_csv_file(recup, folder_name, file_name):
     ligne_en_tete = ['product_page_url', 'universal_product_code', 'title', 'price_including_tax', 
     'price_excluding_tax', 'number_available', 'product_description', 'category', 'review_rating', 'image_url']
-    with open ('./' + "SCRAPER" + '/ ' + category_name + '/' + file_name + '.csv', 'w', encoding="utf-8") as file:
+    with open ('./' + "P2_03_SCRAPING_RESULT" + '/ ' + folder_name + '/' + file_name + '.csv', 'w', encoding="utf-8") as file:
         writer_csv = csv.writer(file, delimiter=',')
         writer_csv.writerow(ligne_en_tete)
         for line in recup:
             writer_csv.writerow(line)
        
 if __name__ =='__main__':    
+    
     result_request = fetch("https://books.toscrape.com/catalogue/category/books/travel_2/index.html")
     name_category = category_name(result_request[1])
     link_category = pagination(result_request)
@@ -55,3 +56,5 @@ if __name__ =='__main__':
     recup = get_infos_book(links_books)
     pro_titel = ip.get_product_titel(result_request)
     creating_csv_file(recup, name_category, pro_titel)
+    
+   
